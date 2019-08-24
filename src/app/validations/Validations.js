@@ -1,12 +1,30 @@
 class Validations {
-    async isValid(schema, params, res) {
-        const isValid = await schema.isValid(params);
+    error = null;
 
-        if (!isValid) {
-            return res.status(400).json({ error: "Store validation failed" });
-        }
+    async isValid(schema, params) {
+        var me = this;
 
-        return true;
+        await schema.validate(params).catch(function(err) {
+            me.setError(err);
+        });
+    }
+
+    sendError(res) {
+        return res
+            .status(401)
+            .json({
+                error: 'Validation failed',
+                message: this.getError().message
+            })
+            .then(this.setError(null));
+    }
+
+    setError(msg) {
+        this.error = msg;
+    }
+
+    getError() {
+        return this.error;
     }
 }
 

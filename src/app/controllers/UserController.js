@@ -3,7 +3,11 @@ import UserValidations from '../validations/UserValidations';
 
 class UserController {
     async store(req, res) {
-        await UserValidations.validateStore(req, res);
+        await UserValidations.validateStore(req);
+
+        if (UserValidations.getError()) {
+            return UserValidations.sendError(res);
+        }
 
         const userExists = await User.findOne({
             where: { email: req.body.email }
