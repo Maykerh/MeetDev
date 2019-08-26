@@ -15,6 +15,17 @@ class UserValidation extends Validations {
 
         await this.isValid(schema, req.body, res);
     }
+
+    async validateUpdate(req, res) {
+        const schema = Yup.object().shape({
+            name: Yup.string(),
+            email: Yup.string().email(),
+            actualPassword: Yup.string(),
+            password: Yup.string().min(6)
+        });
+
+        await this.isValid(schema, req.body, res);
+    }
 }
 
 export default new UserValidation();
