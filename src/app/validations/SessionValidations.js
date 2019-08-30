@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import Validations from './Validations';
 
-class SessionValidation extends Validations {
+class SessionValidations extends Validations {
     async validateStore(req) {
         const schema = Yup.object().shape({
             email: Yup.string()
@@ -14,4 +14,4 @@ class SessionValidation extends Validations {
     }
 }
 
-export default new SessionValidation();
+export default new SessionValidations();

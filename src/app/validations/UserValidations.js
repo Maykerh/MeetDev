@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import Validations from './Validations';
 
-class UserValidation extends Validations {
+class UserValidations extends Validations {
     async validateStore(req, res) {
         const schema = Yup.object().shape({
             name: Yup.string().required(),
@@ -28,4 +28,4 @@ class UserValidation extends Validations {
     }
 }
 
-export default new UserValidation();
+export default new UserValidations();
