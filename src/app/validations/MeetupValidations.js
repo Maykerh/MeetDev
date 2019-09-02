@@ -15,6 +15,22 @@ class MeetupValidations extends Validations {
 
         await this.isValid(schema, req.body, res);
     }
+
+    async validateUpdate(req, res) {
+        const schema = Yup.object().shape({
+            title: Yup.string(),
+            description: Yup.string().nullable(),
+            location: Yup.string(),
+            date: Yup.date(),
+            banner_id: Yup.number()
+                .integer()
+                .nullable()
+        });
+
+        req.body.date = new Date(req.body.date);
+
+        await this.isValid(schema, req.body, res);
+    }
 }
 
 export default new MeetupValidations();

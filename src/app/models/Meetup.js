@@ -18,6 +18,15 @@ class Meetup extends Model {
 
         return this;
     }
+
+    static associate(models) {
+        this.belongsToMany(models.User, {
+            through: 'meetup_user',
+            as: 'users',
+            foreignKey: 'meetup_id',
+            timestamps: false
+        });
+    }
 }
 
 export default Meetup;
