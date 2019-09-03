@@ -4,6 +4,8 @@ import { differenceInHours, isEqual } from 'date-fns';
 import MeetupValidations from '../validations/MeetupValidations';
 import { Op } from 'sequelize';
 import MeetupUser from '../models/MeetupUser';
+import Queue from '../../lib/Queue';
+import SubscriptionMail from '../jobs/SubscriptionMail';
 
 class SubscriptionController {
     async store(req, res) {
@@ -54,7 +56,9 @@ class SubscriptionController {
             }
         });
 
-        const result = await meetup.setUsers(req.userId);
+        const user = await User.findByPk(req.userId);
+
+        const result = await meetup.setUsers(user);
 
         if (!result) {
             return res.status(401).json({
@@ -62,6 +66,11 @@ class SubscriptionController {
                     'An error has ocurred with your subscription, please, try again'
             });
         }
+
+        await Queue.add(SubscriptionMail.key, {
+            meetup,
+            user
+        });
 
         return res.json();
     }
