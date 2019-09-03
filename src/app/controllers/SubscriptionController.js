@@ -8,6 +8,29 @@ import Queue from '../../lib/Queue';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 
 class SubscriptionController {
+    async index(req, res) {
+        const meetups = await Meetup.findAll({
+            where: {
+                date: {
+                    [Op.gte]: new Date()
+                }
+            },
+            include: [
+                {
+                    model: User,
+                    as: 'users',
+                    attributes: [],
+                    where: {
+                        id: req.userId
+                    }
+                }
+            ],
+            order: [['date', 'ASC']]
+        });
+
+        return res.json(meetups);
+    }
+
     async store(req, res) {
         const meetup = await Meetup.findByPk(req.params.id);
 

@@ -21,10 +21,12 @@ routes.post('/files', upload.single('file'), FileController.store);
 routes.put('/users/:id', UserController.update);
 
 routes.get('/meetups', MeetupController.index);
+routes.get('/meetups/list', MeetupController.list);
 routes.post('/meetups', MeetupController.store);
 routes.put('/meetups/:id', MeetupController.update);
 routes.delete('/meetups/:id', MeetupController.delete);
 
-routes.post('/subscription/:id', SubscriptionController.store);
+routes.get('/subscriptions', SubscriptionController.index);
+routes.post('/subscriptions/:id', SubscriptionController.store);
 
 module.exports = routes;
